@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView contactsList = findViewById(R.id.contacts_list);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        List<Contact> contacts = dbHelper.getAllContacts(); // Псевдокод, вам нужно реализовать метод getAllContacts
+        List<Contact> contacts = dbHelper.getAllContacts();
 
         ContactAdapter adapter = new ContactAdapter(contacts);
         contactsList.setLayoutManager(new LinearLayoutManager(this));
@@ -80,5 +80,28 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Contact not found", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Button updateButton = findViewById(R.id.update_button);
+        updateButton.setOnClickListener(v -> {
+            String oldPhone = phoneInput.getText().toString(); // Считаем что это старый номер для поиска
+            String newName = nameInput.getText().toString(); // Новое имя для обновления
+            String newPhone = phoneInput.getText().toString(); // Новый номер для обновления
+
+            if (dbHelper.updateContact(oldPhone, newName, newPhone)) {
+                Toast.makeText(this, "Contact updated successfully!", Toast.LENGTH_SHORT).show();
+                // Обновляем список и адаптер
+                refreshContactsList(dbHelper, contacts, adapter, contactsList);
+            } else {
+                Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    // Метод для обновления списка контактов после изменения в базе данных
+    private void refreshContactsList(DatabaseHelper dbHelper, List<Contact> contacts, ContactAdapter adapter, RecyclerView contactsList) {
+        contacts = dbHelper.getAllContacts(); // Загружаем обновленный список
+        adapter = new ContactAdapter(contacts);
+        contactsList.setAdapter(adapter);
     }
 }

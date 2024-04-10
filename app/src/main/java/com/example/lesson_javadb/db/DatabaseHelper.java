@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.lesson_javadb.db.Contact;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +87,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return contactList;
+    }
+
+    public boolean updateContact(String oldPhone, String newName, String newPhone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NAME, newName);
+        cv.put(COLUMN_PHONE, newPhone);
+
+        // Обновляем запись, где номер телефона равен oldPhone
+        int result = db.update(TABLE_NAME, cv, COLUMN_PHONE + " = ?", new String[]{oldPhone});
+        db.close();
+        return result > 0;
     }
 }
 

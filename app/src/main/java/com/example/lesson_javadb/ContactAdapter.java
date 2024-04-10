@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lesson_javadb.db.Contact;
@@ -12,7 +13,7 @@ import com.example.lesson_javadb.db.Contact;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
-    private List<Contact> contacts;
+    private final List<Contact> contacts;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
@@ -34,6 +35,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         this.contacts = contacts;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
